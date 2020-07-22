@@ -18,4 +18,33 @@ pub mod config {
             Ok(Config { query, path_file })
         }
     }
+
+    #[cfg(test)]
+    mod tests {
+        use super::*;
+
+        #[test]
+        fn new_with_no_args() {
+            let args: &[String] = &[];
+            assert!(Config::new(args).is_err());
+        }
+
+        #[test]
+        fn new_with_one_args() {
+            let args : [String; 1] = ["bob".to_string()];
+            assert!(Config::new(&args).is_err());
+        }
+
+        #[test]
+        fn new_with_two_args() {
+            let args : [String; 2] = ["bob".to_string(), "nike".to_string()];
+            assert!(Config::new(&args).is_err());
+        }
+
+        #[test]
+        fn new_with_three_args() {
+            let args : [String; 3] = ["bob".to_string(), "nike".to_string(), "mark".to_string()];
+            assert!(Config::new(&args).is_ok());
+        }
+    }
 }

@@ -1,7 +1,6 @@
 use std::env;
-use std::fs;
 use std::process;
-use minigrep::config::config::Config;
+use minigrep::Config;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -15,9 +14,5 @@ fn main() {
         }
     }
 
-    let contents = fs::read_to_string(&config.path_file)
-                            .expect("Something wrong with reading from the file.");
-
-    println!("Searching for {:?}", config);
-    println!("Contents of the file: \n ---BEGIN--- \n {} \n ---END---", contents);
+    minigrep::run(&config);
 }
