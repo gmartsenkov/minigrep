@@ -9,7 +9,15 @@ pub fn run(config: &Config) {
 
     println!("Searching for: {}", config.query);
 
-    for line in search(&config.query, &contents) {
+    let result;
+
+    if config.case_insensitive {
+        result = search_case_insensitive(&config.query, &contents)
+    } else {
+        result = search(&config.query, &contents);
+    }
+
+    for line in result {
         println!("{}", line);
     }
 }
@@ -24,6 +32,18 @@ pub fn search<'a>(query : &str, contents : &'a str) -> Vec<&'a str> {
     }
     result
 }
+pub fn search_case_insensitive<'a>(query : &str, contents : &'a str) -> Vec<&'a str> {
+    let mut result = Vec::new();
+    let query = query.to_lowercase();
+
+    for line in contents.lines() {
+        if line.to_lowercase().contains(&query) {
+            result.push(line);
+        }
+    }
+    result
+}
+
 
 #[cfg(test)]
 mod tests {
@@ -37,5 +57,15 @@ Rust:
 safe, fast, productive.
 Pick three.";
         assert_eq!(vec!["safe, fast, productive."], search(query, contents));
+    }
+
+    #[test]
+    fn test_search_case_insensitive() {
+        let query = "DuCT";
+        let contents = "\
+Rust:
+safe, fast, ProduCtivE.
+Pick three.";
+        assert_eq!(vec!["safe, fast, ProduCtivE."], search_case_insensitive(query, contents));
     }
 }

@@ -2,7 +2,8 @@ pub mod config {
     #[derive(Debug)]
     pub struct Config {
         pub query : String,
-        pub path_file: String
+        pub path_file: String,
+        pub case_insensitive: bool
     }
 
     impl Config {
@@ -15,7 +16,9 @@ pub mod config {
             let query = args[1].clone();
             let path_file = args[2].clone();
 
-            Ok(Config { query, path_file })
+            let case_insensitive = std::env::var("CASE_INSENSITIVE").is_err();
+
+            Ok(Config { query, path_file, case_insensitive })
         }
     }
 
