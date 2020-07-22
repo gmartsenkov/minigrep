@@ -9,7 +9,7 @@ fn main() {
     match Config::new(args.as_slice()) {
         Ok(conf) => config = conf,
         Err(err) => {
-            println!("An error occurred: {}", err);
+            eprintln!("An error occurred: {}", err);
             process::exit(1);
         }
     }
